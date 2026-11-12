@@ -3,7 +3,7 @@
 
 An interactive Streamlit dashboard and reproducible Python data pipeline developed for the Unified Mentor Data Analytics Project.
 
-The project analyzes order records, factory-to-customer route assignments, shipping modes, geographic distribution, recorded lead times, and source-data quality.
+This project analyzes order records, factory-to-customer route assignments, shipping modes, geographic distribution, recorded lead times, and source-data quality.
 
 ## 1. Project Overview
 
@@ -20,41 +20,44 @@ The analysis focuses on:
 
 ## 2. Start the Project on Windows
 
-Open the existing `Nassau_Shipping_Route_Analysis` folder in VS Code.
+Follow these steps to run the dashboard locally.
 
-Open Terminal → New Terminal.
-
-Run:
+1. Open the existing `Nassau_Shipping_Route_Analysis` folder in VS Code.
+2. Open Terminal → New Terminal.
+3. Run:
 
 ```powershell
 .\RUN_PROJECT.bat
 ```
 
-Wait for the application to start. Streamlit will display a local URL, usually:
+4. Wait for the application to start.
+5. Open the local URL displayed by Streamlit, usually:
 
-`http://localhost:8501`
+```text
+http://localhost:8501
+```
 
-Open this URL in your browser.
+Keep the terminal open while using the dashboard.
 
-Keep the terminal open while using the dashboard. Press `Ctrl + C` to stop the application.
+Press `Ctrl + C` to stop the application.
 
-Requirements:
+### Requirements
 
 - Python 3.10 or newer.
-- Internet connection for the initial dependency installation.
+- Internet connection for initial dependency installation.
 - VS Code or another Python-compatible editor.
 
-The launcher creates and reuses the project's `.venv` environment.
+The launcher creates and reuses the project's local `.venv` environment.
 
 ## 3. Install Dependencies Manually
 
-If you need to install the dependencies manually, run:
+If you want to install dependencies manually, run:
 
 ```powershell
 python -m pip install -r requirements.txt
 ```
 
-Start the dashboard using:
+Start the dashboard:
 
 ```powershell
 python -m streamlit run app.py
@@ -62,25 +65,42 @@ python -m streamlit run app.py
 
 ## 4. Automated Quality Checks
 
-Run the pipeline tests:
+Run the automated pipeline tests:
 
 ```powershell
 python -m unittest discover -s tests -v
 ```
 
-The current test suite contains five tests covering:
+The current test suite contains 11 automated tests covering:
 
 1. Product-to-factory mapping.
 2. Date anomaly preservation.
 3. Expected dataset size.
 4. Lead-time calculation.
 5. Unique Row IDs.
+6. Duplicate full-row validation.
+7. Factory coordinate availability.
+8. Route generation.
+9. Missing required column validation.
+10. Date anomaly edge cases.
+11. Required source column validation.
 
-All five tests passed during the latest recorded validation.
+### Latest Test Results
+
+- Total tests: 11
+- Passed: 11
+- Failed: 0
+- Errors: 0
+- Final status: OK
+
+All 11 automated tests passed during the latest recorded validation.
 
 ## 5. Dashboard Features
 
+The Streamlit dashboard contains six main sections.
+
 ### Overview
+
 - Total filtered records.
 - Unique order count.
 - Date anomaly count.
@@ -90,15 +110,17 @@ All five tests passed during the latest recorded validation.
 - Division-wise sales distribution.
 
 ### Route Leaderboard
+
 - Factory-to-customer-state route summaries.
 - Unique order volume.
 - Average recorded lead time.
 - Lead-time variability.
 - Route-level diagnostic rankings.
 
-Factory assignments are inferred from the supplied product mapping.
+Factory assignments are inferred from the supplied product-to-factory mapping.
 
 ### Geographic View
+
 - State-level order distribution.
 - Regional comparisons.
 - Recorded sales summaries.
@@ -106,18 +128,21 @@ Factory assignments are inferred from the supplied product mapping.
 Customer coordinates are unavailable, so this is not an exact geographic routing analysis.
 
 ### Ship Mode Analysis
+
 - Unique orders by shipping mode.
 - Average recorded lead time.
 - Lead-time variability.
 - Descriptive shipping mode comparisons.
 
 ### Order Drill-down
+
 - Search by order ID.
 - Search by customer ID.
 - Search by city, product, or state.
 - View order dates, ship dates, lead times, factories, and commercial values.
 
 ### Data Quality and Validation
+
 - Source row and column checks.
 - Missing-value checks.
 - Duplicate identifier checks.
@@ -125,30 +150,36 @@ Customer coordinates are unavailable, so this is not an exact geographic routing
 - Negative lead-time checks.
 - Over-180-day lead-time checks.
 - Unmapped product checks.
-- CSV report exports.
+- Downloadable CSV report exports.
 
-## 6. Important Source-Data Finding
+## 6. Important Source-Data Findings
 
 The supplied dataset contains:
 
-- 10,194 records.
-- 18 source columns.
-- 15 distinct products.
-- No missing source values.
-- No duplicate full rows.
-- No duplicate Row IDs.
+| Metric | Finding |
+|---|---:|
+| Total records | 10,194 |
+| Source columns | 18 |
+| Distinct products | 15 |
+| Missing source values | 0 |
+| Duplicate full rows | 0 |
+| Duplicate Row IDs | 0 |
+| Duplicate Order IDs | 1,645 |
+| Unmapped products | 0 |
 
-The source dates parse using the day-month-year format.
+Duplicate Order IDs represent multiple product records associated with an order and are not automatically treated as duplicate rows.
 
-| Date field | Recorded range |
+### Recorded Date Ranges
+
+| Date Field | Recorded Range |
 |---|---|
 | Order Date | 2 January 2024 to 31 December 2025 |
 | Ship Date | 30 June 2026 to 28 June 2030 |
 | Lead Time | 904 to 1,642 days |
 
-All 10,194 records exceed the provisional 180-day lead-time screening threshold.
-
 The median recorded lead time is 1,274 days.
+
+All 10,194 records exceed the provisional 180-day lead-time screening threshold.
 
 ### Data Integrity Notice
 
@@ -160,15 +191,17 @@ Route rankings and shipping-mode lead-time comparisons are diagnostic only. They
 
 ## 7. Project Scope and Limitations
 
-1. Factory assignments are inferred from the product-to-factory mapping supplied in the project brief.
-2. Factory assignments are derived fields, not original CSV columns.
-3. Customer latitude and longitude are unavailable.
-4. Geographic analysis is limited to customer-state summaries.
-5. Exact road distances and route optimization are not calculated.
-6. Sales and gross profit are commercial measures, not freight costs.
-7. Actual transportation expenses are unavailable.
-8. Shipping mode comparisons are descriptive, not causal.
-9. Recorded lead times remain unverified because of the source-date anomaly.
+The project has the following limitations:
+
+- Factory assignments are inferred from the supplied product-to-factory mapping.
+- Factory assignments are derived fields, not original CSV columns.
+- Customer latitude and longitude are unavailable.
+- Geographic analysis is limited to customer-state summaries.
+- Exact road distances and route optimization are not calculated.
+- Sales and gross profit are commercial measures, not freight costs.
+- Actual transportation expenses are unavailable.
+- Shipping mode comparisons are descriptive, not causal.
+- Recorded lead times remain unverified because of the source-date anomaly.
 
 ## 8. Technology Stack
 
@@ -204,12 +237,12 @@ Nassau_Shipping_Route_Analysis/
 ├── tests/
 │   └── test_pipeline.py
 │
-├── reports/
-│   ├── Executive_Summary.md
-│   └── Research_Paper.md
-│
-└── .venv/
+└── reports/
+    ├── Executive_Summary.md
+    └── Research_Paper.md
 ```
+
+The local `.venv/` and `__pycache__/` directories are excluded from version control through `.gitignore`.
 
 ## 10. Expected Project Outputs
 
@@ -222,7 +255,15 @@ The dashboard provides:
 - Filtered shipment CSV export.
 - Data quality report CSV export.
 
-## 11. Conclusion
+## 11. Repository
+
+GitHub Repository:
+
+https://github.com/krishankantpandey359-droid/nassau-shipping-route-analysis
+
+The repository contains the project source code, dataset, documentation, reports, and automated tests.
+
+## 12. Conclusion
 
 This project provides a reproducible analytical workflow for exploring the Nassau Candy Distributor dataset.
 
@@ -230,8 +271,10 @@ It combines data preparation, validation, exploratory analysis, interactive visu
 
 The source-date anomaly is an important limitation. Operational shipping efficiency conclusions require confirmation of the original date fields.
 
-**Project:** Nassau Candy Distributor | Shipping Route Efficiency Analysis
+### Project Information
 
-**Platform:** Unified Mentor
-
-**Application:** Python and Streamlit
+- Project: Nassau Candy Distributor
+- Analysis: Factory-to-Customer Shipping Route Efficiency
+- Platform: Unified Mentor
+- Application: Python and Streamlit
+- Repository: GitHub
