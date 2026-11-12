@@ -1,0 +1,5 @@
+VS Code Terminal (PowerShell) command:
+
+.\RUN_PROJECT.bat
+
+This script creates a local .venv, installs the listed dependencies, and starts Streamlit. Keep the terminal window open.
