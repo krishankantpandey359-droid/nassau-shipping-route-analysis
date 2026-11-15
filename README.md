@@ -1,7 +1,7 @@
 # Nassau Candy Distributor
 ## Factory-to-Customer Shipping Route Efficiency Analysis
 
-An interactive Streamlit dashboard and reproducible Python data pipeline developed for the Unified Mentor Data Analytics Project.
+An interactive Streamlit dashboard and reproducible Python data pipeline for analysing the Nassau Candy Distributor dataset.
 
 This project analyzes order records, factory-to-customer route assignments, shipping modes, geographic distribution, recorded lead times, and source-data quality.
 
@@ -275,6 +275,5 @@ The source-date anomaly is an important limitation. Operational shipping efficie
 
 - Project: Nassau Candy Distributor
 - Analysis: Factory-to-Customer Shipping Route Efficiency
-- Platform: Unified Mentor
 - Application: Python and Streamlit
 - Repository: GitHub
