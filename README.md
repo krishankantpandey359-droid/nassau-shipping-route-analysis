@@ -71,7 +71,7 @@ Run the automated pipeline tests:
 python -m unittest discover -s tests -v
 ```
 
-The current test suite contains 11 automated tests covering:
+The current test suite contains 12 automated tests covering:
 
 1. Product-to-factory mapping.
 2. Date anomaly preservation.
@@ -83,17 +83,18 @@ The current test suite contains 11 automated tests covering:
 8. Route generation.
 9. Missing required column validation.
 10. Date anomaly edge cases.
-11. Required source column validation.
+11. Exact duplicate source rows are removed while separate order lines remain.
+12. Required source column validation.
 
 ### Latest Test Results
 
-- Total tests: 11
-- Passed: 11
+- Total tests: 12
+- Passed: 12
 - Failed: 0
 - Errors: 0
 - Final status: OK
 
-All 11 automated tests passed during the latest recorded validation.
+All 12 automated tests passed during the latest recorded validation.
 
 ## 5. Dashboard Features
 
