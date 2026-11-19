@@ -255,7 +255,7 @@ selected_modes = st.sidebar.multiselect(
 
 include_anomalies = st.sidebar.checkbox(
     "Include anomalous dates in diagnostic charts",
-    value=True,
+    value=False,
 )
 
 st.sidebar.markdown("---")
