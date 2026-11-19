@@ -37,6 +37,8 @@ PRODUCT_FACTORY = {
     "Kazookles": "The Other Factory",
 }
 
+NUMERIC_COLUMNS = ["Sales", "Units", "Gross Profit", "Cost"]
+
 REQUIRED_COLUMNS = [
     "Row ID",
     "Order ID",
@@ -102,6 +104,25 @@ def load_data(path):
             "Dataset is missing required columns: "
             + ", ".join(missing_columns)
         )
+
+    # Validate commercial measures before downstream aggregation. Missing
+    # source values remain visible in the audit; malformed text and infinities
+    # are rejected rather than silently entering charts or summaries.
+    for column in NUMERIC_COLUMNS:
+        original = df[column]
+        numeric = pd.to_numeric(original, errors="coerce")
+        invalid_text = original.notna() & numeric.isna()
+        if invalid_text.any():
+            raise ValueError(
+                f"Column '{column}' contains non-numeric values "
+                f"({int(invalid_text.sum())} rows)."
+            )
+        present = numeric.dropna().to_numpy(dtype=float)
+        if not np.isfinite(present).all():
+            raise ValueError(
+                f"Column '{column}' contains non-finite numeric values."
+            )
+        df[column] = numeric
 
     # --------------------------------------------------
     # DATE PROCESSING
