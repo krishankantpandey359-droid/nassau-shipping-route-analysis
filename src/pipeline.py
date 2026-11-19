@@ -84,6 +84,12 @@ def load_data(path):
         dtype={"Postal Code": str}
     )
 
+    # Remove exact duplicate source records only. Repeated Order IDs are
+    # valid when an order contains multiple product lines, so they remain.
+    duplicate_full_rows_removed = int(df.duplicated().sum())
+    if duplicate_full_rows_removed:
+        df = df.drop_duplicates(keep="first").copy()
+
     # Validate required source columns.
     missing_columns = [
         column
@@ -193,6 +199,8 @@ def load_data(path):
         "duplicate_full_rows": int(
             df[REQUIRED_COLUMNS].duplicated().sum()
         ),
+
+        "duplicate_full_rows_removed": duplicate_full_rows_removed,
 
         "duplicate_row_ids": int(
             df["Row ID"].duplicated().sum()

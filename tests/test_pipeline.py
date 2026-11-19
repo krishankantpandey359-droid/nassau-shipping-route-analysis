@@ -169,6 +169,40 @@ class PipelineTests(unittest.TestCase):
             182
         )
 
+    def test_exact_duplicate_source_rows_are_removed_but_order_lines_remain(self):
+        rows = []
+        for row_id, order_id, product in [
+            (1, "ORDER-1", "Nerds"),
+            (2, "ORDER-1", "Laffy Taffy"),
+        ]:
+            row = {column: "Test" for column in REQUIRED_COLUMNS}
+            row.update({
+                "Row ID": row_id,
+                "Order ID": order_id,
+                "Order Date": "01-01-2025",
+                "Ship Date": "11-01-2025",
+                "Product Name": product,
+                "State/Province": "California",
+                "Postal Code": "00123",
+                "Sales": 100,
+                "Units": 2,
+                "Gross Profit": 20,
+                "Cost": 80,
+            })
+            rows.append(row)
+
+        # Inject a deliberate exact duplicate for testing only.
+        test_df = pd.DataFrame(rows + [rows[0].copy()])
+        with tempfile.TemporaryDirectory() as temp_dir:
+            csv_path = Path(temp_dir) / "duplicate_fixture.csv"
+            test_df.to_csv(csv_path, index=False)
+            result, audit = load_data(csv_path)
+
+        self.assertEqual(len(result), 2)
+        self.assertEqual(audit["duplicate_full_rows_removed"], 1)
+        self.assertEqual(audit["duplicate_order_ids"], 1)
+        self.assertEqual(set(result["Product Name"]), {"Nerds", "Laffy Taffy"})
+
     def test_missing_required_column_raises_error(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             csv_path = Path(temp_dir) / "invalid_data.csv"
