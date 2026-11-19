@@ -217,7 +217,7 @@ class PipelineTests(unittest.TestCase):
 
     def test_non_numeric_commercial_value_raises_error(self):
         source = pd.read_csv(ROOT / "data" / "Nassau_Candy_Distributor.csv")
-        source.loc[0, "Sales"] = "not-a-number"
+        source["Sales"] = source["Sales"].astype(object)\n        source.loc[0, "Sales"] = "not-a-number"
         with tempfile.TemporaryDirectory() as temp_dir:
             csv_path = Path(temp_dir) / "invalid_sales.csv"
             source.to_csv(csv_path, index=False)
