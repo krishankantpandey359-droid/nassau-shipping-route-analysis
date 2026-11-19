@@ -18,7 +18,7 @@ from pipeline import load_data
 
 st.set_page_config(
     page_title="Nassau Logistics Intelligence",
-    page_icon="ðŸšš",
+    page_icon="🚚",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -465,7 +465,7 @@ elif section == "Route leaderboard":
     )
 
     st.caption(
-        "Route = Factory â†’ Customer State. "
+        "Route = Factory → Customer State. "
         "Factory is inferred from the supplied product mapping."
     )
 
