@@ -1,4 +1,5 @@
 
+import csv
 from pathlib import Path
 
 import numpy as np
@@ -80,6 +81,15 @@ def load_data(path):
             f"Dataset not found: {path}. "
             "Keep the CSV in the project's data folder."
         )
+
+    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        header = next(csv.reader(handle), [])
+    if not header:
+        raise ValueError("Dataset has an empty CSV header.")
+    if any(not str(name).strip() for name in header):
+        raise ValueError("Dataset contains blank column names.")
+    if len(header) != len(set(header)):
+        raise ValueError("Dataset contains duplicate column names.")
 
     df = pd.read_csv(
         path,
