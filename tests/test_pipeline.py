@@ -215,10 +215,6 @@ class PipelineTests(unittest.TestCase):
                 load_data(csv_path)
 
 
-if __name__ == "__main__":
-    unittest.main(verbosity=2)
-
-
     def test_non_numeric_commercial_value_raises_error(self):
         source = pd.read_csv(ROOT / "data" / "Nassau_Candy_Distributor.csv")
         source.loc[0, "Sales"] = "not-a-number"
@@ -236,3 +232,7 @@ if __name__ == "__main__":
             source.to_csv(csv_path, index=False)
             with self.assertRaisesRegex(ValueError, "Cost.*non-finite"):
                 load_data(csv_path)
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)
