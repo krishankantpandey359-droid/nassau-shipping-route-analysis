@@ -153,6 +153,12 @@ Customer coordinates are unavailable, so this is not an exact geographic routing
 - Unmapped product checks.
 - Downloadable CSV report exports.
 
+## 6. Dataset provenance and source matching
+
+A byte-identical copy of this CSV was found in the public repository [aditya72-asg/Nassau-Candy-Data-Analysis](https://github.com/aditya72-asg/Nassau-Candy-Data-Analysis). Both Git blob objects have SHA `07cd816c1a715af6a5bc9ba84a24cd33756922e9` (1,969,400 bytes; 10,194 data rows). This confirms a matching public mirror, not the original publisher or the correctness of the source values. The mirror's README does not identify a primary dataset publisher or a dataset licence.
+
+The date fields remain uncorrected pending confirmation from the original data owner. The exact match and its limitations are documented in [reports/source_data_provenance.md](reports/source_data_provenance.md).
+
 ## 6. Important Source-Data Findings
 
 The supplied dataset contains:
