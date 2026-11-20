@@ -34,6 +34,12 @@ This document describes the original dataset fields and the additional fields de
 | Route | Derived route from the assigned factory to the customer's state |
 | Date Anomaly | Flags records with missing dates, negative lead times, or lead times exceeding the provisional 180-day screening threshold |
 
+## 3. Source provenance
+
+The CSV is byte-identical to a public copy in [aditya72-asg/Nassau-Candy-Data-Analysis](https://github.com/aditya72-asg/Nassau-Candy-Data-Analysis), with matching Git blob SHA `07cd816c1a715af6a5bc9ba84a24cd33756922e9`. This is evidence of an identical mirror only. The public copy does not provide a primary source citation or clear CSV licence. The original publisher and licence remain unverified.
+
+The recorded date anomaly is not corrected without a source-owner confirmation. See [reports/source_data_provenance.md](reports/source_data_provenance.md).
+
 ## 3. Data Interpretation Notes
 
 - The original dataset contains 18 source columns.
