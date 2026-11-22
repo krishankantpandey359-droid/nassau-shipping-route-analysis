@@ -18,7 +18,7 @@ from pipeline import load_data
 
 st.set_page_config(
     page_title="Nassau Logistics Intelligence",
-    page_icon="ðŸšš",
+    page_icon="🚚",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -255,7 +255,7 @@ selected_modes = st.sidebar.multiselect(
 
 include_anomalies = st.sidebar.checkbox(
     "Include anomalous dates in diagnostic charts",
-    value=True,
+    value=False,
 )
 
 st.sidebar.markdown("---")
@@ -465,7 +465,7 @@ elif section == "Route leaderboard":
     )
 
     st.caption(
-        "Route = Factory â†’ Customer State. "
+        "Route = Factory → Customer State. "
         "Factory is inferred from the supplied product mapping."
     )
 
@@ -485,18 +485,22 @@ elif section == "Route leaderboard":
             horizontal=True,
         )
 
-        routes = (
-            performance.groupby(
-                ["Factory", "State/Province", "Region", "Route"],
-                as_index=False,
-            )
+        route_keys = ["Factory", "State/Province", "Region", "Route"]
+        route_volume = (
+            filtered.groupby(route_keys, as_index=False)
             .agg(
                 Unique_orders=("Order ID", "nunique"),
-                Average_lead_time=("Lead Time Days", "mean"),
-                Lead_time_std=("Lead Time Days", "std"),
                 Recorded_sales=("Sales", "sum"),
             )
         )
+        route_timing = (
+            performance.groupby(route_keys, as_index=False)
+            .agg(
+                Average_lead_time=("Lead Time Days", "mean"),
+                Lead_time_std=("Lead Time Days", "std"),
+            )
+        )
+        routes = route_volume.merge(route_timing, on=route_keys, how="left")
 
         if ranking == "Average lead time":
             routes = routes.sort_values("Average_lead_time")
@@ -556,16 +560,19 @@ elif section == "Geographic view":
         "Customer coordinates are unavailable. Charts use customer state summaries."
     )
 
-    geo = (
-        filtered.groupby(
-            ["State/Province", "Region"], as_index=False
-        )
+    geo_keys = ["State/Province", "Region"]
+    geo_volume = (
+        filtered.groupby(geo_keys, as_index=False)
         .agg(
             Unique_orders=("Order ID", "nunique"),
             Recorded_sales=("Sales", "sum"),
-            Average_recorded_lead_time=("Lead Time Days", "mean"),
         )
     )
+    geo_timing = (
+        performance.groupby(geo_keys, as_index=False)
+        .agg(Average_recorded_lead_time=("Lead Time Days", "mean"))
+    )
+    geo = geo_volume.merge(geo_timing, on=geo_keys, how="left")
 
     if geo.empty:
         st.info("No records match the selected filters.")
@@ -609,15 +616,21 @@ elif section == "Ship mode analysis":
         unsafe_allow_html=True,
     )
 
-    mode = (
+    mode_volume = (
         filtered.groupby("Ship Mode", as_index=False)
         .agg(
             Unique_orders=("Order ID", "nunique"),
-            Average_recorded_lead_time=("Lead Time Days", "mean"),
-            Lead_time_std=("Lead Time Days", "std"),
             Recorded_sales=("Sales", "sum"),
         )
     )
+    mode_timing = (
+        performance.groupby("Ship Mode", as_index=False)
+        .agg(
+            Average_recorded_lead_time=("Lead Time Days", "mean"),
+            Lead_time_std=("Lead Time Days", "std"),
+        )
+    )
+    mode = mode_volume.merge(mode_timing, on="Ship Mode", how="left")
 
     if mode.empty:
         st.info("No records match the selected filters.")

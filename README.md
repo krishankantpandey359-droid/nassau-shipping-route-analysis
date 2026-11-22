@@ -210,6 +210,12 @@ The project has the following limitations:
 - Shipping mode comparisons are descriptive, not causal.
 - Recorded lead times remain unverified because of the source-date anomaly.
 
+
+
+### Factory-coordinate provenance
+
+The factory latitude/longitude values in the pipeline are manually configured project metadata. The supplied transaction CSV does not provide factory coordinates or a verifiable factory-location source. Treat these points as illustrative placeholders for dashboard demonstration, not confirmed factory locations. Do not interpret map distances or lines as real logistics routes until the locations are independently verified.
+
 ## 8. Technology Stack
 
 | Technology | Purpose |
