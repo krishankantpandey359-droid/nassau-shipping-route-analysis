@@ -1,9 +1,9 @@
 # Nassau Candy Distributor
-## Factory-to-Customer Shipping Route Efficiency Analysis
+## Order and Shipping Data Quality Diagnostics
 
-An interactive Streamlit dashboard and reproducible Python data pipeline for analysing the Nassau Candy Distributor dataset.
+An interactive Streamlit dashboard and reproducible Python data pipeline for exploring the Nassau Candy Distributor dataset.
 
-This project analyzes order records, factory-to-customer route assignments, shipping modes, geographic distribution, recorded lead times, and source-data quality.
+This project summarizes order records, inferred factory-to-customer state assignments, shipping modes, geographic distribution, and recorded date fields. The supplied source has a critical date anomaly: all 10,194 records have recorded lead times above the provisional 180-day screening threshold. Therefore, lead-time summaries and route rankings are diagnostics of the supplied data only. They are not evidence of actual shipping efficiency or service performance.
 
 ## 1. Project Overview
 
@@ -278,15 +278,15 @@ The repository contains the project source code, dataset, documentation, reports
 
 ## 12. Conclusion
 
-This project provides a reproducible analytical workflow for exploring the Nassau Candy Distributor dataset.
+This project provides a reproducible workflow for examining order records and identifying source-data quality issues.
 
-It combines data preparation, validation, exploratory analysis, interactive visualization, and downloadable reports.
+It combines data preparation, date validation, descriptive summaries, interactive visualization, and downloadable reports.
 
-The source-date anomaly is an important limitation. Operational shipping efficiency conclusions require confirmation of the original date fields.
+The supplied source contains a material date anomaly. Do not present route rankings, recorded lead-time averages, or ship-mode comparisons as shipping-efficiency findings. Obtain corrected dates and verified factory locations from an authoritative source before making operational conclusions.
 
 ### Project Information
 
 - Project: Nassau Candy Distributor
-- Analysis: Factory-to-Customer Shipping Route Efficiency
+- Analysis: Order and Shipping Data Quality Diagnostics
 - Application: Python and Streamlit
 - Repository: GitHub
