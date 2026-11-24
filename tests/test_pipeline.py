@@ -245,7 +245,15 @@ def test_dashboard_section_options_have_matching_render_branches():
     selector_source = app_source[selector_start:selector_end]
     import re
 
-    options = re.findall(r'^\s*"([^"]+)",?\s*$', selector_source, flags=re.MULTILINE)
+    options = re.findall(r'^\s*"([^"]+)",?\s*    branches = set(re.findall(r'(?:if|elif) section == "([^"]+)"', app_source))
+    assert options, "Dashboard selector options were not found"
+    assert set(options) == branches, {
+        "options_without_render_branch": sorted(set(options) - branches),
+        "branches_without_selector_option": sorted(branches - set(options)),
+    }
+
+, selector_source, flags=re.MULTILINE)
+    options = [option for option in options if option != "SELECT DASHBOARD SECTION"]
     branches = set(re.findall(r'(?:if|elif) section == "([^"]+)"', app_source))
     assert options, "Dashboard selector options were not found"
     assert set(options) == branches, {
