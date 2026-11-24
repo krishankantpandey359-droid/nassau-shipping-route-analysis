@@ -237,3 +237,19 @@ class PipelineTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+def test_dashboard_section_options_have_matching_render_branches():
+    app_source = (ROOT / "app.py").read_text(encoding="utf-8")
+    selector_start = app_source.index('section = st.selectbox(')
+    selector_end = app_source.index('\n\n# ==================================================', selector_start)
+    selector_source = app_source[selector_start:selector_end]
+    import re
+
+    options = re.findall(r'^\s*"([^"]+)",?\s*$', selector_source, flags=re.MULTILINE)
+    branches = set(re.findall(r'(?:if|elif) section == "([^"]+)"', app_source))
+    assert options, "Dashboard selector options were not found"
+    assert set(options) == branches, {
+        "options_without_render_branch": sorted(set(options) - branches),
+        "branches_without_selector_option": sorted(branches - set(options)),
+    }
+
