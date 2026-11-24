@@ -17,7 +17,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from pipeline import load_data
 
 st.set_page_config(
-    page_title="Nassau Logistics Intelligence",
+    page_title="Nassau Data Quality Diagnostics",
     page_icon="🚚",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -204,6 +204,14 @@ if df.empty:
     st.error("The dataset is empty.")
     st.stop()
 
+over_180 = int(audit.get("over_180_day_lead_times", 0))
+st.warning(
+    f"Source-data warning: {over_180:,} of {len(df):,} records have recorded "
+    "lead times above the provisional 180-day screening threshold. The source "
+    "dates are unverified. Lead-time summaries and route rankings are diagnostic "
+    "only and must not be interpreted as actual shipping efficiency or service performance."
+)
+
 # ==================================================
 # HEADER
 # ==================================================
@@ -211,12 +219,11 @@ if df.empty:
 st.markdown("""
 <div class="hero">
     <div class="eyebrow">
-        NASSAU CANDY DISTRIBUTOR | LOGISTICS INTELLIGENCE
+        NASSAU CANDY DISTRIBUTOR | SOURCE-DATA DIAGNOSTICS
     </div>
-    <h1>Factory-to-Customer Shipping Route Efficiency</h1>
+    <h1>Order and Shipping Data Quality Diagnostics</h1>
     <p>
-        Explore recorded lead times, route volumes, shipping modes,
-        geographic summaries and data-quality findings.
+        Explore order volumes, shipping modes, state-level summaries and date-quality findings. Recorded lead times are unverified and diagnostic only.
     </p>
 </div>
 """, unsafe_allow_html=True)
@@ -311,7 +318,7 @@ sales = filtered["Sales"].sum()
 # KPI CARDS
 # ==================================================
 
-st.markdown("### Business Performance Overview")
+st.markdown("### Order and Source-Data Overview")
 
 kpis = [
     ("Filtered records", f"{row_count:,}", "Rows after filters"),
@@ -320,7 +327,7 @@ kpis = [
     (
         "Average recorded lead time",
         f"{avg_lead:.1f} days" if pd.notna(avg_lead) else "N/A",
-        "Unverified source dates",
+        "Diagnostic only; not service performance",
     ),
     (
         "Recorded sales",
@@ -476,9 +483,9 @@ elif section == "Route leaderboard":
         )
     else:
         ranking = st.radio(
-            "Rank routes by",
+            "Explore diagnostic route metric",
             [
-                "Average lead time",
+                "Recorded lead time (unverified)",
                 "Unique order volume",
                 "Lead-time variability",
             ],
@@ -502,7 +509,7 @@ elif section == "Route leaderboard":
         )
         routes = route_volume.merge(route_timing, on=route_keys, how="left")
 
-        if ranking == "Average lead time":
+        if ranking == "Recorded lead time (unverified)":
             routes = routes.sort_values("Average_lead_time")
         elif ranking == "Unique order volume":
             routes = routes.sort_values(
@@ -660,7 +667,7 @@ elif section == "Ship mode analysis":
                 x="Ship Mode",
                 y="Average_recorded_lead_time",
                 color="Ship Mode",
-                title="Average recorded lead time",
+                title="Average recorded lead time (unverified)",
                 template="plotly_white",
             )
 
