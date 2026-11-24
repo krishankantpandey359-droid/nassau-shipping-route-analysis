@@ -364,7 +364,7 @@ section = st.selectbox(
     "SELECT DASHBOARD SECTION",
     [
         "Overview",
-        "Route leaderboard",
+        "Route diagnostics",
         "Geographic view",
         "Ship mode analysis",
         "Order drill-down",
@@ -528,21 +528,42 @@ elif section == "Route leaderboard":
 
         c1, c2 = st.columns(2)
 
+        if ranking == "Recorded lead time (unverified)":
+            left_title = "10 lowest recorded lead-time routes (unverified)"
+            right_title = "10 highest recorded lead-time routes (unverified)"
+            left_routes = routes.sort_values("Average_lead_time").head(10)
+            right_routes = routes.sort_values(
+                "Average_lead_time", ascending=False
+            ).head(10)
+        elif ranking == "Unique order volume":
+            left_title = "10 highest-volume routes"
+            right_title = "10 lowest-volume routes"
+            left_routes = routes.sort_values(
+                "Unique_orders", ascending=False
+            ).head(10)
+            right_routes = routes.sort_values("Unique_orders").head(10)
+        else:
+            left_title = "10 highest lead-time variability routes (unverified)"
+            right_title = "10 lowest lead-time variability routes (unverified)"
+            left_routes = routes.sort_values(
+                "Lead_time_std", ascending=False, na_position="last"
+            ).head(10)
+            right_routes = routes.sort_values(
+                "Lead_time_std", na_position="last"
+            ).head(10)
+
         with c1:
-            st.markdown("### 10 lowest recorded lead-time routes")
+            st.markdown(f"### {left_title}")
             st.dataframe(
-                routes.sort_values("Average_lead_time")
-                .head(10).round(2),
+                left_routes.round(2),
                 hide_index=True,
                 width='stretch',
             )
 
         with c2:
-            st.markdown("### 10 highest recorded lead-time routes")
+            st.markdown(f"### {right_title}")
             st.dataframe(
-                routes.sort_values(
-                    "Average_lead_time", ascending=False
-                ).head(10).round(2),
+                right_routes.round(2),
                 hide_index=True,
                 width='stretch',
             )
