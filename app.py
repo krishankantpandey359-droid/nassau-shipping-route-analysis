@@ -464,7 +464,7 @@ if section == "Overview":
 # ROUTE LEADERBOARD
 # ==================================================
 
-elif section == "Route leaderboard":
+elif section == "Route diagnostics":
 
     st.markdown(
         '<div class="section-heading">Route diagnostics leaderboard</div>',
