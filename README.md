@@ -293,4 +293,4 @@ The supplied source contains a material date anomaly. Do not present route ranki
 
 ## Latest GitHub Actions validation
 
-Latest successful main-branch data-quality and pipeline-test run checked on 26 November 2026: [Open workflow run #45794484050](https://github.com/krishankantpandey359-droid/nassau-shipping-route-analysis/actions/runs/45794484050). The run validates the checks configured in this repository's workflow.
+Latest successful main-branch workflow run verified on 26 November 2026: [GitHub Actions run #45799511352](https://github.com/krishankantpandey359-droid/nassau-shipping-route-analysis/actions/runs/45799511352). This confirms the configured automated checks, not every manual or deployment feature.
